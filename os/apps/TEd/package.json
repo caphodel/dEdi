@@ -1,0 +1,11 @@
+{
+	"name": "TEd",
+	"description": "Text Editor",
+	"version": "0.0.1",
+	"icon": "fe-file-text",
+	"id": "app-TEd",
+	"multiple": true,
+	"files": [
+		"index.js"
+	  ]
+}

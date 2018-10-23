@@ -1,0 +1,7 @@
+.app-FMan .table tr{
+	cursor: pointer;
+}
+.app-FMan .table tr i{
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}

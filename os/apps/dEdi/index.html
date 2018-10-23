@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+	  <title>coDE eDItor</title>
+	  <link href="../../assets/css/all.min.css" rel="stylesheet" />
+	  <link href="../../assets/css/dashboard.css" rel="stylesheet" />
+	  <link href="../../assets/css/os.css" rel="stylesheet" />
+	  <link rel="stylesheet" href="../../assets/css/all.min.css">
+	  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+	  <link rel="stylesheet" href="codemirror/theme/monokai-sublime.css">
+	  <link rel="stylesheet" href="css/editor.css">
+	  <link rel="stylesheet" href="codemirror/addon/fold/foldgutter.css" />
+	  <link href="css/webintellisense.css" rel="stylesheet" />
+	  <script src="../../assets/js/vendors/jquery-3.2.1.min.js"></script>
+	  <script src="js/editor.js"></script>
+	  <script src="codemirror/lib/codemirror.js"></script>
+	  <script src="codemirror/addon/edit/matchtags.js"></script>
+	  <script src="codemirror/addon/edit/closebrackets.js"></script>
+	  <script src="codemirror/addon/edit/closetag.js"></script>
+	  <script src="codemirror/addon/fold/foldcode.js"></script>
+	  <script src="codemirror/addon/fold/foldgutter.js"></script>
+	  <script src="codemirror/addon/fold/brace-fold.js"></script>
+	  <script src="codemirror/addon/fold/xml-fold.js"></script>
+	  <script src="codemirror/addon/fold/indent-fold.js"></script>
+	  <script src="codemirror/addon/fold/markdown-fold.js"></script>
+	  <script src="codemirror/addon/fold/comment-fold.js"></script>
+	  <script src="codemirror/addon/mode/loadmode.js"></script>
+	  <script src="codemirror/mode/meta.js"></script>
+	  <script src="js/webintellisense.js"></script>
+	  <script src="js/webintellisense-codemirror.js"></script>
+	  <script src="js/references/ace-1.1.4/ace.js"></script>
+	  <script src="js/references/ace-1.1.4/mode-html.js"></script>
+	  <script src="js/references/ace-1.1.4/mode-css.js"></script>
+	  <script src="js/references/ace-1.1.4/mode-javascript.js"></script>
+  </head>
+
+  <body>
+	  <div id="dEdi" class="container bg-editor text-light" style="margin: 0 !important; padding: 0 !important;">
+		  <div class="row" style="height: 100%">
+			  <div id="editor-explorer" class="col col-lg-2 sidebar-show sidebar-show-left" style="margin: 0 !important; padding: 0 !important;">
+				  <div class="panel-header bg-gray-dark">
+					  <span>Explorer</span>
+				  </div>
+				  <div id="editor-workspace">
+					  <ul class="tree">
+
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="hsplitter bg-secondary"></div>
+			  <div id="editor" class="col" style="margin: 0 !important; padding: 0 !important;">
+				  <div class="panel-header bg-gray-dark">
+					  <span style="padding: 0;">
+						  <div class="card-header" style=" padding: 0; ;margin: 0">
+							  <ul class="nav nav-tabs card-header-tabs" id="editor-tabs">
+							  </ul>
+						  </div>
+					  </span>
+				  </div>
+				  <div id="codemirror-container">
+					  <textarea id="codemirror"></textarea>
+				  </div>
+			  </div>
+			  <div class="hsplitter bg-secondary"></div>
+			  <div class="col col-lg-2 sidebar-show sidebar-show-right" id="sidebar-right" style="margin: 0 !important; padding: 0 !important;">
+				  <div class="panel-header bg-gray-dark">
+					  <span>Right Bar</span>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+  </body>
+</html>

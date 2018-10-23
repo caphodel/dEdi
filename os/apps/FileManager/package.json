@@ -1,0 +1,11 @@
+{
+	"name": "File Manager",
+	"description": "File Manager",
+	"version": "0.0.1",
+	"icon": "fe-folder",
+	"id": "app-FMan",
+	"multiple": true,
+	"files": [
+		"index.js"
+	  ]
+}

@@ -1,0 +1,202 @@
+<link href="../os/assets/css/dashboard.css" rel="stylesheet" />
+<link href="../os/assets/css/os.css" rel="stylesheet" />
+<link rel="stylesheet" href="../os/assets/css/all.min.css">
+<script src="../os/assets/js/vendors/jquery-3.2.1.min.js"></script>
+<script src="./resize.js"></script>
+<div class="panels">
+  <div class="panel panel--one">
+    <div class="panel__header handle handle--one"><span>Panel 1</span></div>
+  </div>
+  <div class="splitter handle--two" id="splitter1"></div>
+  <div class="panel panel--two">
+    <div class="panel__header handle handle--two"><span>Panel 2</span></div>
+  </div>
+  <div class="splitter handle--three" id="splitter2"></div>
+  <div class="panel panel--three">
+    <div class="panel__header handle handle--three"><span>Panel 3</span>
+	</div>
+	<div id="content">
+		<div class="panelh1 panelh">1</div>
+		<div class="splitterh handle-1"></div>
+		<div class="panelh2 panelh">2</div>
+		<div class="splitterh handle-2"></div>
+		<div class="panelh3 panelh">3</div>
+		<div class="splitterh handle-3"></div>
+		<div class="panelh4 panelh">4</div>
+	</div>
+  </div>
+  <div class="splitter handle--two" id="splitter3"></div>
+  <div class="panel panel--two">
+    <div class="panel__header handle handle--two"><span>Panel 2</span></div>
+  </div>
+</div>
+<style>
+html,
+body {
+  height: 100%;
+}
+#content{
+	display: flex;
+	flex: 1;
+}
+.panels {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.panel {
+  flex: 1;
+  width: 100%;
+  min-height: 40px;
+  background: #ccc;
+  display: flex;
+  flex-direction: column;
+}
+.panelh {
+  flex: 1;
+  height: 100%;
+  min-width: 40px;
+  background: #ccc;
+  display: flex;
+  flex-direction: row;
+}
+.panel__header {
+  height: 40px;
+  background: #b3b3b3;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.panel__header span {
+  display: block;
+  padding: 12px;
+}
+.handle--two,
+.handle--three {
+  cursor: row-resize;
+}
+.splitter {
+  flex-shrink: 0;
+  background: #fff;
+  height: 5px;
+}
+.splitterh {
+  flex-shrink: 0;
+  background: #fff;
+  width: 5px;
+}
+
+</style>
+
+<script>
+/*$elFirst = $('.panels > .panel:first-child')
+$elFirst.resizable({
+	resizeHeight: false,
+	resizeHeightFrom: "top",
+	handleSelector: '#'+$elFirst.next().prop('id')
+})*/
+$('.panels > .panel:not(:first-child)').each(function(i, val){
+	var $el = $(val)
+	$el.resizable({
+		resizeWidth: false,
+		resizeHeightFrom: "top",
+		handleSelector: '#'+$el.prev().prop('id'),
+		onDragStart: function(){
+			//$el.parent()[0].heights = getPanelHeights($el.parent())
+			$el[0].max = $el.outerHeight() + $el.prevAll('.panel').eq(0).outerHeight()
+		},
+		onDrag: function(e, $cel, newWidth, newHeight) {
+			var $ne = $el.nextAll('.panel').eq(0)
+			var $pe = $el.prevAll('.panel').eq(0)
+			
+			if($cel[0].max - newHeight > 40){
+				$cel.css({
+					flex: ' 0 0 '+newHeight+'px'
+				})
+				$pe.css({
+					flex: ' 0 0 '+($cel[0].max - newHeight)+'px'
+				})
+			}
+			else{
+				$cel.css({
+					flex: ' 0 0 '+($cel[0].max-40)+'px'
+				})
+				$pe.css({
+					flex: ' 0 0 40px'
+				})
+			}
+			/*$cel.css({
+				flex: '1'
+			})*/
+			
+			if($cel.outerHeight() <= 40){
+				$cel.css({
+					flex: ' 0 0 40px'
+				})
+				$pe.css({
+					flex: ' 0 0 '+($cel[0].max - 40)+'px'
+				})
+			}
+			
+			/*var $sibs = $cel.nextAll('.panel').not()
+			$sibs.each(function(i, val){
+				var $nel = $(val)
+				$nel.css({
+					flex: "0 0 "+$el.parent()[0].heights[i]
+				})
+			})*/
+			
+			$cel.css({
+				flex: '0 0'+$cel.outerHeight()+'px'
+			})
+		},
+		onDragEnd: function() {
+			$el.parent()[0].heights = getPanelHeights($el.parent());
+			setPanelHeights($el.parent());
+		}
+	})
+})
+
+function getPanelHeights($el) {
+	var heights = [], panelHeight = $el.outerHeight();
+	$el.children('.panel').each(function(i, val){
+		$(val)[0].index = i
+		heights[i] = $(val).outerHeight() / panelHeight * 100 + "%"
+	})
+	return heights;
+}
+
+function setPanelHeights($el) {
+	$el.children('.panel').each(function(i, val){
+		$(val).css({ flex: "1 1 " + $el[0].heights[i], height: "" });
+	})
+}
+
+$(window).resize(function() {
+	$('.panels')[0].heights = getPanelHeights($('.panels'))
+});
+
+
+//
+// Expandable panels
+//
+
+var $expandedPanel = "";
+
+$(".handle").on("dblclick", function(e) {
+  if (
+    $(this)
+      .closest(".panel")
+      .is($expandedPanel)
+  ) {
+    $expandedPanel = "";
+    $(".panel").css({ flex: "1" });
+  } else {
+    $expandedPanel = $(this).closest(".panel");
+    $(".panel").css({ flex: "0" });
+    $expandedPanel.css({ flex: "1" });
+  }
+});
+</script>

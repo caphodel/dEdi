@@ -1,0 +1,21 @@
+<div style="display: flex; flex-direction: column">
+	<div class="form-group">
+		<label class="form-label">Username</label>
+		<input type="text" class="form-control" id="{{id}}-username" name="username" placeholder="Username">
+	</div>
+	<div class="form-group">
+		<label class="form-label">Password</label>
+		<input type="password" class="form-control" id="{{id}}-password" name="password" placeholder="Password">
+	</div>
+	<div class="form-group">
+		<label class="form-label">Email Type</label>
+		<select id="{{id}}-mail-type" class="custom-select">
+			<option value="exchange">Exchange</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label class="form-label">Server</label>
+		<input type="text" class="form-control" id="{{id}}-server" name="server" placeholder="Server" autocomplete="server">
+	</div>
+	<button id="app-Mail-login" type="button" class="btn btn-primary">Login</button>
+</div>

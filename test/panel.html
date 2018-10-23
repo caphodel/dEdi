@@ -1,0 +1,290 @@
+<link href="../os/assets/css/dashboard.css" rel="stylesheet" />
+<link href="../os/assets/css/os.css" rel="stylesheet" />
+<link rel="stylesheet" href="../os/assets/css/all.min.css">
+<script src="../os/assets/js/vendors/jquery-3.2.1.min.js"></script>
+<script src="./resize.js"></script>
+<div class="panels">
+  <div class="panel panel--one">
+    <div class="panel__header handle handle--one"><span>Panel 1</span></div>
+  </div>
+  <div class="splitter handle--two"></div>
+  <div class="panel panel--two">
+    <div class="panel__header handle handle--two"><span>Panel 2</span></div>
+  </div>
+  <div class="splitter handle--three"></div>
+  <div class="panel panel--three">
+    <div class="panel__header handle handle--three"><span>Panel 3</span>
+	</div>
+	<div id="content">
+		<div class="panelh1 panelh">1</div>
+		<div class="splitterh handle-1"></div>
+		<div class="panelh2 panelh">2</div>
+		<div class="splitterh handle-2"></div>
+		<div class="panelh3 panelh">3</div>
+		<div class="splitterh handle-3"></div>
+		<div class="panelh4 panelh">4</div>
+	</div>
+  </div>
+</div>
+<style>
+html,
+body {
+  height: 100%;
+}
+#content{
+	display: flex;
+	flex: 1;
+}
+.panels {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.panel {
+  flex: 1;
+  width: 100%;
+  min-height: 40px;
+  background: #ccc;
+  display: flex;
+  flex-direction: column;
+}
+.panelh {
+  flex: 1;
+  height: 100%;
+  min-width: 40px;
+  background: #ccc;
+  display: flex;
+  flex-direction: row;
+}
+.panel__header {
+  height: 40px;
+  background: #b3b3b3;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.panel__header span {
+  display: block;
+  padding: 12px;
+}
+.handle--two,
+.handle--three {
+  cursor: row-resize;
+}
+.splitter {
+  flex-shrink: 0;
+  background: #fff;
+  height: 5px;
+}
+.splitterh {
+  flex-shrink: 0;
+  background: #fff;
+  width: 5px;
+}
+
+</style>
+
+<script>
+//
+// RESIZABLE PANELS
+//
+
+var $panelOne = $(".panel--one"),
+  $panelTwo = $(".panel--two"),
+  $panelThree = $(".panel--three"),
+  $panels = $(".panels"),
+  $panelsHeight = $panels.outerHeight();
+  $p1 = $('.panelh1')
+  $p2 = $('.panelh2')
+  $p3 = $('.panelh3')
+  $p4 = $('.panelh4')
+  $ps = $('#content')
+  $panelsWidth = $ps.outerWidth();
+  
+  $p1.resizable({
+	resizeHeight: false,
+	handleSelector: '.handle-1'
+  })
+
+$p2.resizable({
+	resizeHeight: false,
+	handleSelector: '.handle-1',
+  resizeWidthFrom: "left",
+  onDragStart: function() {
+    getPanelWidths();
+  },
+  onDrag: function() {
+    $expandedPanel = ""; // Reset expanded panel
+
+    $p1.css({ flex: "initial" });
+    $p2.css({ flex: "initial" });
+    $p3.css({ flex: "0 0 " + $p3Width });
+    $p4.css({ flex: "0 0 " + $p4Width });
+
+    // Check for collision with panel three
+    if ($p2.outerWidth() <= 40) {
+      $p1.css({ flex: "initial" });
+      $p3.css({ flex: "1" });
+	  
+		if ($p3.outerWidth() <= 40) {
+			$p3.css({ flex: "0 0 40px" });
+			$p4.css({ flex: "1" });
+		}
+    }
+  },
+  onDragEnd: function() {
+    getPanelWidths();
+    setPanelWidths();
+  }
+});
+
+$p3.resizable({
+	resizeHeight: false,
+	handleSelector: '.handle-2',
+  resizeWidthFrom: "left",
+  onDragStart: function() {
+    getPanelWidths();
+  },
+  onDrag: function(e) {
+    $expandedPanel = ""; // Reset expanded panel
+
+    $p1.css({ flex: "0 0 " + $p1Width });
+    $p2.css({ flex: "1" });
+    $p3.css({ flex: "initial" });
+    $p4.css({ flex: "0 0" + $p4Width});
+
+    // Check for collision with panel two
+    if ($p2.outerWidth() <= 40) {
+      $p1.css({ flex: "1" });
+      $p2.css({ flex: "initial" });
+    }
+	
+	if ($p3.outerWidth() <= 40 && $p4.outerWidth() > 40) {
+      $p2.css({ flex: "0 0 " + (e.originalEvent.screenX - $p2.offset().left)+"px"});
+      $p4.css({ flex: "1" });
+	}
+	
+	if ($p3.outerWidth() <= 40 && $p4.outerWidth() <= 40) {
+		$p4.css({ flex: "0 0 40px" });
+	}
+	
+	console.log(e.originalEvent, $p3.offset())
+	
+  },
+  onDragEnd: function() {
+    getPanelWidths();
+    setPanelWidths();
+  }
+});
+
+$(window).resize(function() {
+  $panelsHeight = $panels.outerHeight();
+  $panelsWidth = $ps.outerWidth();
+});
+
+function getPanelHeights() {
+  $panelOneHeight = $panelOne.outerHeight() / $panelsHeight * 100 + "%";
+  $panelTwoHeight = $panelTwo.outerHeight() / $panelsHeight * 100 + "%";
+  $panelThreeHeight = $panelThree.outerHeight() / $panelsHeight * 100 + "%";
+}
+
+function setPanelHeights() {
+  $panelOne.css({ flex: "1 1 " + $panelOneHeight, height: "" });
+  $panelTwo.css({ flex: "1 1 " + $panelTwoHeight, height: "" });
+  $panelThree.css({ flex: "1 1 " + $panelThreeHeight, height: "" });
+}
+
+function getPanelWidths() {
+  $p1Width = $p1.outerWidth() / $panelsWidth * 100 + "%";
+  $p2Width = $p2.outerWidth() / $panelsWidth * 100 + "%";
+  $p3Width = $p3.outerWidth() / $panelsWidth * 100 + "%";
+  $p4Width = $p4.outerWidth() / $panelsWidth * 100 + "%";
+}
+
+function setPanelWidths() {
+  $p1.css({ flex: "1 1 " + $p1Width, width: "" });
+  $p2.css({ flex: "1 1 " + $p2Width, width: "" });
+  $p3.css({ flex: "1 1 " + $p3Width, width: "" });
+  $p4.css({ flex: "1 1 " + $p4Width, width: "" });
+}
+
+$panelOne.resizable({
+  resizeWidth: false,
+  handleSelector: ".handle--two"
+});
+
+$panelTwo.resizable({
+  handleSelector: ".handle--two",
+  resizeWidth: false,
+  resizeHeightFrom: "top",
+  onDragStart: function() {
+    getPanelHeights();
+  },
+  onDrag: function() {
+    $expandedPanel = ""; // Reset expanded panel
+
+    $panelOne.css({ flex: "initial" });
+    $panelTwo.css({ flex: "initial" });
+    $panelThree.css({ flex: "0 0 " + $panelThreeHeight });
+
+    // Check for collision with panel three
+    if ($panelTwo.outerHeight() <= 40) {
+      $panelOne.css({ flex: "initial" });
+      $panelThree.css({ flex: "1" });
+    }
+  },
+  onDragEnd: function() {
+    getPanelHeights();
+    setPanelHeights();
+  }
+});
+
+$panelThree.resizable({
+  handleSelector: ".handle--three",
+  resizeWidth: false,
+  resizeHeightFrom: "top",
+  onDragStart: function() {
+    getPanelHeights();
+  },
+  onDrag: function() {
+    $expandedPanel = ""; // Reset expanded panel
+
+    $panelOne.css({ flex: "0 0 " + $panelOneHeight });
+    $panelTwo.css({ flex: "1" });
+    $panelThree.css({ flex: "initial" });
+
+    // Check for collision with panel two
+    if ($panelTwo.outerHeight() <= 40) {
+      $panelOne.css({ flex: "1" });
+      $panelTwo.css({ flex: "initial" });
+    }
+  },
+  onDragEnd: function() {
+    getPanelHeights();
+    setPanelHeights();
+  }
+});
+
+//
+// Expandable panels
+//
+
+var $expandedPanel = "";
+
+$(".handle").on("dblclick", function(e) {
+  if (
+    $(this)
+      .closest(".panel")
+      .is($expandedPanel)
+  ) {
+    $expandedPanel = "";
+    $(".panel").css({ flex: "1" });
+  } else {
+    $expandedPanel = $(this).closest(".panel");
+    $(".panel").css({ flex: "0" });
+    $expandedPanel.css({ flex: "1" });
+  }
+});
+</script>

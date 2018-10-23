@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "directory-tree": "^2.1.0",
+    "drivelist": "^6.4.3",
+    "express": "^4.16.3",
+    "express-route-refresh": "0.0.2",
+    "express-route-reload": "^1.0.1",
+    "isbinaryfile": "^3.0.3",
+    "knex": "^0.15.2",
+    "mssql": "^4.2.1",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "node-dir": "^0.1.17",
+    "node-info": "^2.0.0",
+    "nodejs-info": "^1.1.2",
+    "oracle": "^0.4.1",
+    "pg": "^7.4.3",
+    "request": "^2.88.0",
+    "require-reload": "^0.2.2",
+    "serve-static": "^1.13.2",
+    "sqlite3": "^4.0.2",
+    "ws": "^6.0.0"
+  }
+}

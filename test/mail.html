@@ -1,0 +1,628 @@
+<link href="../os/assets/css/dashboard.css" rel="stylesheet" />
+<link href="../os/assets/css/os.css" rel="stylesheet" />
+<link rel="stylesheet" href="../os/assets/css/all.min.css">
+<script src="../os/assets/js/vendors/jquery-3.2.1.min.js"></script>
+<style>
+	div#app-Mail .window-header{
+		height: 3.5rem;
+		display: flex;
+		padding: 0.5rem 1rem;
+		border-bottom: 1px solid #E4E8EB;
+	}
+	
+	div#app-Mail .window-header > * {
+		align-self: center;
+	}
+	
+	body{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		overflow: auto;
+	}
+	.window{
+		position: relative !important;
+		margin: 0.5rem;
+	}
+	
+	.nav-app.nav-tabs{
+		overflow: hidden;
+		
+	}
+	
+	div#app-Mail #folder-list > a{
+		border: 0 !important;
+		display: flex;
+		padding: 0.25rem 0.5rem;
+	}
+	
+	div#app-Mail #folder-list > a i{
+		align-self: center;
+		margin-right: 0.5rem;
+	}
+	
+	div#app-Mail #folder-list{
+		min-width: 10rem;
+		border-right: 1px solid #E4E8EB;
+		overflow-y: auto;
+	}
+	
+	div#app-Mail{
+		border: 0;
+	}
+	
+	/*div#app-Mail #item-list tr td > div{
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	
+	div#app-Mail #item-list tr td:first-child{
+		padding-left: 0.5rem !important;
+	}
+	
+	div#app-Mail #item-list tr td:last-child{
+		padding-right: 0.5rem !important;
+	}
+	
+	div#app-Mail #item-list tr td br {
+		display: none;
+	}
+	div#app-Mail #item-list tr td p {
+		padding: 0;
+		margin: 0;
+	}*/
+	
+	div#app-Mail #item-detail{
+		border-left: 1px solid #E4E8EB;
+	}
+	
+	div#app-Mail #item-list, div#app-Mail #item-detail{
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+	
+	/*div#app-Mail #item-list > ul{
+		flex: 1;
+	}*/
+	
+	div#app-Mail #item-list > div > ul{
+		padding: 0;
+	}
+	
+	div#app-Mail #item-list .list-separated-item .row{
+		flex-wrap: nowrap;
+	}
+	
+	div#app-Mail #item-list .list-separated-item .row .col, div#app-Mail #item-list .list-separated-item .row .col > *{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
+	div#app-Mail #item-list .list-separated-item{
+		padding: 0.5rem;
+		position: relative;
+		border: 0;
+	}
+	
+	#app-Mail-body{
+		display: flex;
+		flex: 1;
+	}
+	
+	/*div#app-Mail #item-list-action, div#app-Mail #item-detail-action*/
+	.app-Mail-header{
+		min-height: 2.6rem;
+		border-bottom: 1px solid #E4E8EB;
+		display: flex;
+		padding: 0 0.5rem;
+	}
+	
+	/*div#app-Mail #item-list-action > *, div#app-Mail #item-detail-action > **/
+	.app-Mail-header > *{
+		align-self: center;
+		margin: 0;
+	}
+	
+	/*div#app-Mail #item-list-action > *:not(:first-child), div#app-Mail #item-detail-action > *:not(:first-child)*/
+	.app-Mail-header > *:not(:first-child){
+		margin: 0 0.5rem;
+	}
+	
+	/*div#app-Mail #item-list-action > *:last-child, div#app-Mail #item-detail-action > *:last-child*/
+	.app-Mail-header > *:last-child{
+		margin-right: 0;
+	}
+	
+	/*div#app-Mail #item-list-action > i, div#app-Mail #item-detail-action > i*/
+	.app-Mail-header > i{
+		cursor: pointer;
+	}
+	
+	.avatar-md.fas, .avatar-md.far{
+		font-size: 2rem !important;
+		line-height: 2.5rem !important;
+		background: #DB4437;
+		color: #fff;
+	}
+	
+	.selected{
+		background: #E4E8EB;
+	}
+	
+	.selected:after{
+		border-left: 0.2rem solid #DB4437;
+		position: absolute;
+		left: 0;
+		height: 100%;
+		content: '';
+		top: 0;
+	}
+	
+	.multiple-selected{
+		background: #E4E8EB;
+	}
+	
+	.multiple-selected:after{
+		border-left: 0.2rem solid #DB4437;
+		position: absolute;
+		left: 0;
+		height: 100%;
+		content: '';
+		top: 0;
+	}
+	
+	div#app-Mail #folder-list > a.active{
+		position: relative;
+	}
+	
+	div#app-Mail #folder-list > a.active:after{
+		border-left: 0.2rem solid #467fcf;
+		position: absolute;
+		left: 0;
+		height: 100%;
+		content: '';
+		top: 0;
+	}
+	
+	div#app-Mail #app-Mail-item-body{
+		flex: 1;
+	}
+	
+	div#app-Mail #app-Mail-item-body > * {
+		margin: 0.5rem;
+		border: 1px solid #E4E8EB;
+		
+	}
+	
+	div#app-Mail .app-Mail-item-body-conversation > *{
+		border: 0 !important;
+	}
+</style>
+<div class="window" id="app-Mail" style="width: 600px; height: 450px; display: flex; flex-direction: column">
+	<div class="window-header">
+		<div class="card-options">
+			<a href="#" class="card-options-minimize" data-toggle="card-collapse"><i class="far fa-window-minimize"></i></a>
+			<a href="#" class="card-options-maximize" data-toggle="card-collapse"><i class="far fa-window-maximize"></i></a>
+			<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fas fa-times"></i></a>
+		</div>
+	</div>
+	<div style="margin: auto; width: 10rem;">
+		<div class="progress progress-slim">
+			<div class="indeterminate bg-danger"></div>
+		</div>
+		<div style="text-align: center;">
+			Loading Mail
+		</div>
+	</div>
+</div>
+
+<div class="window" id="app-Mail" style="width: 600px; height: 450px; display: flex; flex-direction: column">
+	<div class="window-header">
+		<div>Add account</div>
+		<div style="flex: 1"></div>
+		<div class="card-options">
+			<a href="#" class="card-options-minimize" data-toggle="card-collapse"><i class="far fa-window-minimize"></i></a>
+			<a href="#" class="card-options-maximize" data-toggle="card-collapse"><i class="far fa-window-maximize"></i></a>
+			<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fas fa-times"></i></a>
+		</div>
+	</div>
+	<div style="margin: auto; width: 10rem;">
+		<div style="display: flex; flex-direction: column">
+			<div class="form-group">
+				<label class="form-label">Email Type</label>
+				<select id="app-Mail-mail-type" class="custom-select">
+					<option value="exchange">Exchange</option>
+				</select>
+			</div>
+			<div id="app-Mail-login-form">
+				<div class="form-group">
+					<label class="form-label">Username</label>
+					<input type="text" class="form-control" id="app-Mail-username" name="username" placeholder="Username">
+				</div>
+				<div class="form-group">
+					<label class="form-label">Password</label>
+					<input type="password" class="form-control" id="app-Mail-password" name="password" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label class="form-label">Server</label>
+					<input type="text" class="form-control" id="app-Mail-server" name="server" placeholder="Server" autocomplete="server">
+				</div>
+			</div>
+			<button id="app-Mail-login" type="button" class="btn btn-primary">Login</button>
+		</div>
+	</div>
+</div>
+
+<div class="window" id="app-Mail" style="width: 600px; height: 450px; display: flex; flex-direction: column">
+	<div class="window-header">
+		<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/29.jpg)"></span>
+		<div style="flex: 1">
+		</div>
+		<div class="card-options">
+			<a href="#" class="card-options-minimize" data-toggle="card-collapse"><i class="far fa-window-minimize"></i></a>
+			<a href="#" class="card-options-maximize" data-toggle="card-collapse"><i class="far fa-window-maximize"></i></a>
+			<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fas fa-times"></i></a>
+		</div>
+	</div>
+	<div id="app-Mail-body" style="">
+		<div class="list-group" id="folder-list" role="tablist">
+			<button class="btn btn-sm btn-outline-primary" style="margin: 0.5rem;"><i class="fas fa-pencil-alt"></i> Compose</button>
+			<a class="list-group-item list-group-item-action active" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-inbox"></i>Inbox <div style="text-align: right; flex: 1">2</div></a>
+			<a style="padding-left: 1.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Profile</a>
+			<a style="padding-left: 1.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Messages</a>
+			<a style="padding-left: 2.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Settings</a>
+			<a class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-paper-plane"></i>Sent <div style="text-align: right; flex: 1">2</div></a>
+		</div>
+		<div id="item-list">
+			<div id="item-list-action" class="app-Mail-header">
+				<label class="custom-control custom-checkbox" title="Select all">
+					<input type="checkbox" class="custom-control-input" name="select-all" value="select-all">
+					<span class="custom-control-label"></span>
+				</label>
+				<div style="flex: 1"></div>
+				<i class="far fa-envelope-open" title="Mark as read"></i>
+				<i class="far fa-trash-alt" title="Delete email"></i>
+			</div>
+			<div style="flex: 1; overflow-y: auto; overflow-x: hidden" class="list-unstyled list-separated app-Mail-items">
+				<ul class="list-unstyled list-separated">
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto" style="font-size: 1rem">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('div#app-Mail .app-Mail-items').on('click', 'li', function(e){
+			e.preventDefault();
+			$el = $(e.currentTarget);
+			if($(e.target).hasClass('avatar') == false && $(e.currentTarget).parent().children('.multiple-selected').length == 0){
+				$(e.currentTarget).siblings().removeClass('selected')
+				$(e.currentTarget).toggleClass('selected')
+			}
+			else{
+				$ava = $el.find('.avatar')
+				$ava.closest('ul').children().removeClass('selected')
+				$ava.toggleClass('fas fa-check').closest('li').toggleClass('multiple-selected')
+			}
+		})
+		
+		$('div#app-Mail #folder-list').on('click', ' > a', function(e){
+			e.preventDefault();
+			$el = $(e.currentTarget);
+			$el.addClass('active').siblings('a').removeClass('active')
+		})
+	})
+</script>
+
+<div class="window" id="app-Mail" style="width: 950px; height: 450px; display: flex; flex-direction: column">
+	<div class="window-header">
+		<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/29.jpg)"></span>
+		<div style="flex: 1">
+		</div>
+		<div class="card-options">
+			<a href="#" class="card-options-minimize" data-toggle="card-collapse"><i class="far fa-window-minimize"></i></a>
+			<a href="#" class="card-options-maximize" data-toggle="card-collapse"><i class="far fa-window-maximize"></i></a>
+			<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fas fa-times"></i></a>
+		</div>
+	</div>
+	<div id="app-Mail-body" style="">
+		<div class="list-group" id="folder-list" role="tablist">
+			<button class="btn btn-sm btn-outline-primary" style="margin: 0.5rem;"><i class="fas fa-pencil-alt"></i> Compose</button>
+			<a class="list-group-item list-group-item-action active" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-inbox"></i>Inbox <div style="text-align: right; flex: 1">2</div></a>
+			<a style="padding-left: 1.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Profile</a>
+			<a style="padding-left: 1.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Messages</a>
+			<a style="padding-left: 2.5rem" class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-folder"></i>Settings</a>
+			<a class="list-group-item list-group-item-action" data-toggle="list" href="javascript:void()" role="tab"><i class="fas fa-paper-plane"></i>Sent <div style="text-align: right; flex: 1">2</div></a>
+		</div>
+		<div id="item-list">
+			<div id="item-list-action" class="app-Mail-header">
+				<label class="custom-control custom-checkbox" title="Select all">
+					<input type="checkbox" class="custom-control-input" name="select-all" value="select-all">
+					<span class="custom-control-label"></span>
+				</label>
+				<div style="flex: 1"></div>
+				<i class="far fa-envelope-open" title="Mark as read"></i>
+				<i class="far fa-trash-alt" title="Delete email"></i>
+			</div>
+			<div style="flex: 1; overflow-y: auto; overflow-x: hidden" class="list-unstyled list-separated app-Mail-items">
+				<ul class="list-unstyled list-separated">
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto" style="font-size: 1rem">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">Subject of amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+					<li class="list-separated-item">
+						<div class="row align-items-center">
+						  <div class="col-auto">
+							<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						  </div>
+						  <div class="col">
+							<div>
+							  <a href="javascript:void(0)" class="text-inherit">Amanda Hunt</a>
+							</div>
+							<small class="d-block item-except text-sm text-muted h-1x">amanda_hunt@example.com</small>
+						  </div>
+						  <div class="col-auto">
+							<small class="d-block item-except text-sm text-muted h-1x">17:02 AM</small>
+						  </div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="item-detail">
+			<div id="item-detail-action" class="app-Mail-header">
+				<h4>Subject</h4>
+			</div>
+			<div id="app-Mail-item-body">
+				<div class="app-Mail-item-body-conversation">
+					<div class="app-Mail-header" class="app-Mail-header" style="padding: 0.5rem !important;">
+						<span class="avatar avatar-md d-block" style="background-image: url(demo/faces/female/12.jpg)"></span>
+						<div>
+							<div>Amanda Hunt</div>
+							<div class="small text-muted">To me, scada</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

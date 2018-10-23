@@ -1,0 +1,12 @@
+{
+	"name": "Mail",
+	"description": "Email Viewer",
+	"version": "0.0.1",
+	"icon": "fe-mail",
+	"id": "app-Mail",
+	"multiple": false,
+	"files": [
+		"index.js"
+	  ],
+	"style": ["index.css"]
+}

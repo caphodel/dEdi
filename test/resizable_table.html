@@ -1,0 +1,117 @@
+<style>
+.table-resizable.resizing, .table-resizable th::before {
+  cursor: col-resize;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.table-resizable th {
+  position: relative;
+}
+.table-resizable th::before {
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1em;
+}
+.table-resizable th:last-of-type::before {
+  display: none;
+}
+.table-resizable td {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
+<link href="../os/assets/css/dashboard.css" rel="stylesheet" />
+<script src="../os/assets/js/vendors/jquery-3.2.1.min.js"></script>
+<div class="container">
+	<div class="page-header">
+		<h1>Super Simple Column Resizing</h1>
+	</div>
+	
+	<p class="lead"><b>Click &amp; drag</b> column headers to resize columns. <b>Double click</b> table head to reset column widths.</p>
+	
+	<table class="table table-striped table-bordered table-resizable">
+	  <thead>
+		 <tr>
+			<th>Name</th>
+			<th>Profession</th>
+			<th>Address</th>
+			<th>Allergies</th>
+		 </tr>
+	  </thead>
+	  <tbody>
+		 <tr>
+			<td>Nitro Cowabunga</td>
+			<td>Magician</td>
+			<td>1600 Pennsylvania Ave, Washington DC</td>
+			<td>Poison</td>
+		 </tr>
+		  <tr>
+			<td>Bandolier Uppercuts</td>
+			<td>Pokemon Trainer</td>
+			<td>1 Infinite Loop, Cupertino, California</td>
+			<td>NKDA</td>
+		 </tr>
+		  <tr>
+			<td>Corgi Nyquist</td>
+			<td>Sea Captain</td>
+			<td>245819637.001 Popcicle Circle Apartment 54634354, Hastings, Nebraska</td>
+			<td>Tigers</td>
+		 </tr>
+		  <tr>
+			<td>Kombucha Bonzai</td>
+			<td>Baby</td>
+			<td>3051 Van Brunt Boulevard, Kansas City, Missouri</td>
+			<td>Plutonium</td>
+		 </tr>
+	  </tbody>
+	</table>
+	
+	<hr>
+	
+	<p>Based on <a href="http://stackoverflow.com/a/6157119">http://stackoverflow.com/a/6157119</a></p>
+</div>
+<script>
+	$(function() {
+		var startX,
+			 startWidth,
+			 $handle,
+			 $table,
+			 pressed = false;
+		
+		$(document).on({
+			mousemove: function(event) {
+				if (pressed) {
+					$handle.width(startWidth + (event.pageX - startX));
+				}
+			},
+			mouseup: function() {
+				if (pressed) {
+					$table.removeClass('resizing');
+					pressed = false;
+				}
+			}
+		}).on('mousedown', '.table-resizable th', function(event) {
+			$handle = $(this);
+			pressed = true;
+			startX = event.pageX;
+			startWidth = $handle.width();
+			$handle.siblings().each(function(i, val){
+				$(val).width($(val).width())
+			})
+			
+			$table = $handle.closest('.table-resizable').addClass('resizing');
+			$table.css('table-layout', 'fixed')
+		}).on('dblclick', '.table-resizable thead', function() {
+			// Reset column sizes on double click
+			$(this).find('th[style]').css('width', '');
+		});
+	});
+</script>

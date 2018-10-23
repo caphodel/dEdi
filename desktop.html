@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta http-equiv="Content-Language" content="en" />
+	<meta name="msapplication-TileColor" content="#2d89ef">
+	<meta name="theme-color" content="#4188c9">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<link rel="icon" href="./favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+	<!-- Generated: 2018-04-16 09:29:05 +0200 -->
+	<title>Project Management</title>
+	<link rel="stylesheet" href="./assets/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./assets/css/font.css">
+	<link rel="stylesheet" href="./assets/css/layout.css">
+	<script src="./assets/js/vendors/jquery-3.2.1.min.js"></script>
+	<script src="./assets/js/vendors/jquery-ui.min.js"></script>
+	<script src="./assets/js/interact.js"></script>
+	<!--script src="./assets/js/require.min.js"></script-->
+	<script>
+		/*requirejs.config({
+									baseUrl: '.'
+								});*/
+	</script>
+	<!-- Dashboard Core -->
+	<link href="./assets/css/dashboard.css" rel="stylesheet" />
+	<link rel="stylesheet" href="./assets/css/bootstrap-better-nav.min.css">
+	<!--script src="./assets/js/dashboard.js"></script-->
+	<script src="./assets/js/vendors/bootstrap.bundle.min.js"></script>
+	<script src="./assets/js/bootstrap-better-nav.min.js"></script>
+	<!-- Input Mask Plugin -->
+	<script src="./assets/plugins/input-mask/js/jquery.mask.min.js"></script>
+	<script src="./assets/js/layout.js"></script>
+	<style>
+		.card-options>.btn>i {
+			margin-right: .25rem;
+			line-height: 1;
+			font-size: 0.875rem;
+			width: 0.875rem;
+			vertical-align: baseline;
+			display: inline-block;
+		}
+
+		.navbar-nav>.nav-item .nav-link>i {
+			margin-right: .25rem;
+			line-height: 1;
+			font-size: 0.875rem;
+			width: 0.875rem;
+			vertical-align: baseline;
+			display: inline-block;
+		}
+
+		.navbar-nav>.nav-item .nav-link {
+			color: #9aa0ac;
+		}
+
+		.navbar-nav>.nav-item.active>.nav-link {
+			color: #467fcf;
+		}
+
+		body {
+			height: 100%;
+		}
+
+		.nav-margin {
+			margin: auto;
+		}
+
+		@media (min-width: 1200px) .nav-margin {
+			max-width: 1140px;
+		}
+
+		@media (min-width: 992px) .nav-margin {
+			max-width: 960px;
+		}
+
+		@media (min-width: 768px) .nav-margin {
+			max-width: 720px;
+		}
+
+		@media (min-width: 576px) .nav-margin {
+			max-width: 540px;
+		}
+
+		/*.navbar-brand {
+			color: #fff !important;
+		}*/
+
+		.link-group {
+			padding-left: 0px;
+			list-style-type: none;
+			margin-bottom: 0px;
+		}
+
+		.link-group>li {
+			padding-left: 0px;
+			list-style-type: none;
+		}
+
+		.link-group>li a {
+			display: block;
+			color: #99979c;
+		}
+
+		.link-group>li a:hover {
+			color: #007bff;
+			text-decoration: none;
+		}
+
+		.container-full {
+			margin: 0 auto;
+			max-width: 100% !important;
+		}
+
+		.container-full>.content {
+			margin-top: 1.5rem !important
+		}
+
+		.card-subtitle {
+			color: #4A4A4A !important;
+			font-weight: 700;
+		}
+
+		/*.main-navbar {
+			background-color: #563d7c !important;
+		}*/
+
+		.properties {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 1rem;
+		}
+
+		.properties .table td {
+			border: 0 !important;
+		}
+
+		.properties .table td:nth-child(odd) {
+			font-weight: 700;
+		}
+
+		.properties .card>.d-flex>div>* {
+			white-space: nowrap;
+		}
+
+		.properties>* {
+			flex: 1;
+			margin-bottom: 0.5rem;
+			flex-basis: 25%;
+		}
+
+		.properties .card {
+			margin-bottom: 0 !important;
+			height: 100%;
+			padding: 0.5rem !important;
+		}
+
+		.properties .progress {
+			margin-left: 1rem;
+			width: 10rem;
+		}
+
+		.card-options>.dropdown>.dropdown-menu>.dropdown-item {
+			margin-left: 0;
+		}
+
+		.card-options>.dropdown {
+			display: none;
+		}
+
+		.card-options>.btn {
+			display: inline-block;
+		}
+
+		.sidebar-tab {
+			display: none;
+			margin-bottom: 0;
+		}
+
+		.sidebar-tab .nav-tabs {
+			border: 0 !important;
+		}
+
+		.sidebar>not(.sidebar-tab) {
+			display: block;
+		}
+
+		@media only screen and (max-width: 576px) {
+			.card-options>.dropdown {
+				display: inline-block;
+			}
+			.card-options>.btn {
+				display: none;
+			}
+			.properties>* {
+				display: block;
+				flex: none;
+				margin-bottom: 1rem;
+			}
+			.properties>*:last-child {
+				margin-bottom: 1.5rem;
+			}
+			.sidebar-tab {
+				display: block;
+			}
+			.sidebar>.card:not(.sidebar-tab) {
+				display: none !important;
+			}
+			.properties .table td {
+				display: block;
+			}
+		}
+
+		.close:before {
+			content: none;
+		}
+
+		.history dl {
+			margin-bottom: 0;
+		}
+
+		#content {
+			padding: 0;
+			border: 0;
+		}
+
+		.window {
+			width: 420px;
+			height: 300px;
+			border: 1px solid rgba(0, 0, 0, 0.3);
+			-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			-webkit-background-clip: padding-box;
+			-moz-background-clip: padding-box;
+			background-clip: padding-box;
+		}
+
+		.window > .card-header{
+			background: #FAFAFA;
+			padding: 0.25rem 0.75rem;
+			min-height: 1.75rem;
+		}
+
+		.window > .card-header > .card-options{
+			margin-right: 0;
+		}
+
+		.window > .card-body{
+			padding: 0.75rem;
+		}
+		#os-toolbar{
+			display: flex;
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 1.75rem;
+			background: #FAFAFA;
+			padding: 0.25rem;
+			border-top: 1px solid rgba(0, 0, 0, 0.3);
+			-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+			-webkit-background-clip: padding-box;
+			-moz-background-clip: padding-box;
+			background-clip: padding-box;
+			align-items: center;
+		}
+		#os-toolbar>*{
+			position: relative;
+		}
+		.os-toolbar-divider{
+			border-left: 2px dotted rgba(0, 0, 0, 0.3);
+			width: 0px;
+			height: 100%;
+			margin: 0 0.25rem;
+		}
+
+		#os-start-menu{
+			font-size: 18px;
+			cursor: pointer;
+		}
+
+		#os-start-menu:hover:after{
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.2);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			content: '';
+		}
+		#os-toolbar-button{
+			display: flex;
+			flex: 1;
+		}
+		#os-toolbar-notification > *{
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body class="">
+	<div id="os-toolbar">
+		<i id="os-start-menu" class="fe fe-grid"></i>
+		<div class="os-toolbar-divider"></div>
+		<div id="os-toolbar-button">
+			<a href="javascript:void(0)" class="btn btn-outline-primary btn-sm">calculator</a>
+		</div>
+		<div class="os-toolbar-divider"></div>
+		<div id="os-toolbar-notification">
+			<i class="fe fe-volume"></i>
+		</div>
+	</div>
+
+	<div class="card window">
+		<div class="card-header">
+			<h3 class="card-title">Windows</h3>
+			<div class="card-options">
+				<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+				<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+			</div>
+		</div>
+		<div class="card-body">
+			<ul class="link-group">
+				<li>
+					<a href="#">View all tasks</a>
+				</li>
+				<li class="">
+					<a href="#">Summary</a>
+				</li>
+				<li class="">
+					<a href="#">Gantt</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script>
+	window.dragMoveListener = function(event) {
+		console.log('move')
+		var target = event.target,
+			// keep the dragged position in the data-x/data-y attributes
+			x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+			y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+		// translate the element
+		target.style.webkitTransform =
+			target.style.transform =
+			'translate(' + x + 'px, ' + y + 'px)';
+
+		// update the posiion attributes
+		target.setAttribute('data-x', x);
+		target.setAttribute('data-y', y);
+	}
+
+	window.moveToCenter = function(element) {
+		var target = element[0],
+			dataY = element.attr('data-y') || 0,
+			x = (($(window).width() / 2) - (element.width() / 2)),
+			y = window.scrollY - dataY - element.offset().top + element.height() / 2
+
+		// translate the elementwindow.scrollY
+		target.style.webkitTransform =
+			target.style.transform =
+			'translate(' + x + 'px, ' + y + 'px)';
+
+		// update the posiion attributes
+		target.setAttribute('data-x', x);
+		target.setAttribute('data-y', y);
+	}
+
+	window.createWindow = function(element) {
+		if (element.length > 0) {
+			interact(element[0])
+				.draggable({
+					onmove: dragMoveListener,
+					allowFrom: '.card-header',
+					elementOrigin: {
+						x: 0.5,
+						y: 0.5
+					}
+				})
+				.resizable({
+					// resize from all edges and corners
+					edges: {
+						left: true,
+						right: true,
+						bottom: true,
+						top: true
+					},
+
+					// keep the edges inside the parent
+					restrictEdges: {
+						outer: 'parent',
+						endOnly: true,
+					},
+
+					// minimum size
+					restrictSize: {
+						min: {
+							width: 100,
+							height: 50
+						},
+					},
+
+					inertia: true,
+				})
+				.on('resizemove', function(event) {
+					var target = event.target,
+						x = (parseFloat(target.getAttribute('data-x')) || 0),
+						y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+					// update the element's style
+					target.style.width = event.rect.width + 'px';
+					target.style.height = event.rect.height + 'px';
+
+					// translate when resizing from top or left edges
+					x += event.deltaRect.left;
+					y += event.deltaRect.top;
+
+					target.style.webkitTransform = target.style.transform =
+						'translate(' + x + 'px,' + y + 'px)';
+
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
+				});
+
+			moveToCenter(element)
+		}
+	}
+
+	createWindow($('.window'))
+</script>
+</html>
