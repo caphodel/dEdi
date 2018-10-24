@@ -82,6 +82,10 @@ $(window).ready(function(){
 		viewportMargin: Infinity,
 		indentWithTabs: true,
 	});
+	
+	var intellisense = new CodeMirrorIntellisense(editor);
+	
+	hint['js'](intellisense)
   
   	/*var intellisense = new CodeMirrorIntellisense(editor);
 	intellisense.addDeclarationTrigger({ keyCode: 190 }); // `.`
